@@ -32,7 +32,22 @@ module Carver
     raise 'ApplicationController not defined'
   end
 
+  def self.define_around_perform
+    Rails.send(:load, "#{Rails.root}/app/jobs/application_job.rb")
+
+    ApplicationJob.class_eval do
+      around_perform :profile_job_performs do |job|
+        Carver::Profiler.profile_memory(job.name, 'perform', 'ApplicationJob') do
+          yield
+        end
+      end
+    end
+  rescue LoadError, NameError
+    raise 'ApplicationJob not defined'
+  end
+
   ActiveSupport.on_load(:after_initialize, yield: true) do
     Carver.define_around_action if Carver.configuration.targets.include?('controllers')
+    Carver.define_around_perform if Carver.configuration.targets.include?('jobs')
   end
 end

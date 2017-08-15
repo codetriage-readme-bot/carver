@@ -24,6 +24,8 @@ module Carver
     def entry
       if is_controller?
         { name: "#{@path.split('/').map(&:titleize).join('::').delete(' ')}Controller##{@action}", type: 'controller' }.freeze
+      else
+        { name: "#{@path}##{@action}", type: 'job' }.freeze
       end
     end
   end
