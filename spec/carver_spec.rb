@@ -39,4 +39,48 @@ describe Carver do
       end
     end
   end
+
+  describe '.add_to_results' do
+    before { described_class.clear_results }
+
+    it 'creates initial array or appends results' do
+      described_class.add_to_results(:key_1, { memory: 123 })
+      expect(described_class.current_results[:key_1]).to eq([{ memory: 123 }])
+      described_class.add_to_results(:key_1, { memory: 321 })
+      expect(described_class.current_results[:key_1]).to eq([{ memory: 123 }, { memory: 321 }])
+    end
+  end
+
+  describe '.clear_results' do
+    subject { described_class.clear_results }
+    before { described_class.clear_results }
+
+    it 're-initializes the current results' do
+      expect(described_class.current_results).to eq({})
+      described_class.add_to_results(:key_1, { memory: 123 })
+      expect(described_class.current_results[:key_1]).to eq([{ memory: 123 }])
+      subject
+      expect(described_class.current_results).to eq({})
+    end
+  end
+
+  describe '.start' do
+    subject { described_class.start }
+
+    it 'enables carver' do
+      Carver.configuration.enabled = false
+      Carver.start
+      expect(Carver.configuration.enabled).to be_truthy
+    end
+  end
+
+  describe '.stop' do
+    subject { described_class.stop }
+
+    it 'disables carver' do
+      Carver.configuration.enabled = true
+      Carver.stop
+      expect(Carver.configuration.enabled).to be_falsey
+    end
+  end
 end

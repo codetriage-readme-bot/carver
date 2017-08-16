@@ -2,11 +2,13 @@
 describe Carver::Configuration do
   describe '.initialize' do
     subject { described_class.new }
+    before { allow(Rails.env).to receive(:test?).and_return(true) }
 
     it 'sets default configuration values' do
       expect(subject.instance_variable_get(:@targets)).to eq(%w(controllers jobs))
-      expect(subject.instance_variable_get(:@log_results)).to eq(false)
-      expect(subject.instance_variable_get(:@output_file)).to eq('./carver/results.json')
+      expect(subject.instance_variable_get(:@log_results)).to be_falsey
+      expect(subject.instance_variable_get(:@output_file)).to eq('./profiling/results.json')
+      expect(subject.instance_variable_get(:@enabled)).to be_truthy
     end
   end
 end

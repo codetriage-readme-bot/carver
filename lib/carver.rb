@@ -18,6 +18,30 @@ module Carver
     yield(configuration)
   end
 
+  def self.current_results
+    @current_results ||= {}
+  end
+
+  def self.add_to_results(key, results)
+    if current_results[key].nil?
+      current_results[key] = [results]
+    else
+      current_results[key] << results
+    end
+  end
+
+  def self.clear_results
+    @current_results = {}
+  end
+
+  def self.start
+    configuration.enabled = true
+  end
+
+  def self.stop
+    configuration.enabled = false
+  end
+
   def self.define_around_action
     Rails.send(:load, "#{Rails.root}/app/controllers/application_controller.rb")
 
@@ -49,5 +73,14 @@ module Carver
   ActiveSupport.on_load(:after_initialize, yield: true) do
     Carver.define_around_action if Carver.configuration.targets.include?('controllers')
     Carver.define_around_perform if Carver.configuration.targets.include?('jobs')
+  end
+
+  at_exit do
+    if configuration.output_file
+      dir_struct = configuration.output_file.split('/')
+      dir = dir_struct[0...dir_struct.size - 1].join('/')
+      Dir.mkdir(dir) unless File.directory?(dir)
+      File.open(configuration.output_file, 'w') { |f| f.write(current_results.to_json) }
+    end
   end
 end

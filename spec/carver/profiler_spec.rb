@@ -7,6 +7,8 @@ describe Carver::Profiler do
     end
   end
 
+  before { Carver.configuration.enabled = true }
+
   describe '.profile_memory' do
     subject { described_class.profile_memory(path, action, parent) { ExamplesController.new.index } }
     let(:path) { 'api/v1/examples' }
@@ -17,6 +19,13 @@ describe Carver::Profiler do
       Carver.configuration.log_results = true
       expect(Rails.logger).to receive(:info).with('[Carver] source=Api::V1::ExamplesController#index type=controller total_allocated_memsize=200 total_retained_memsize=0')
       subject
+    end
+
+    it 'adds results to current report if enabled' do
+      Carver.configuration.log_results = false
+      Carver.clear_results
+      subject
+      expect(Carver.current_results).to eq({ 'Api::V1::ExamplesController#index' => [{ total_allocated_memsize: 192, total_retained_memsize: 0 }] })
     end
   end
 end

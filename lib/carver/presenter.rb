@@ -10,8 +10,15 @@ module Carver
 
     def log
       Rails.logger.info(
-          "[Carver] source=#{entry[:name]} type=#{entry[:type]} total_allocated_memsize=#{@results.total_allocated_memsize} " \
+          "[Carver] source=#{entry_info[:name]} type=#{entry_info[:type]} total_allocated_memsize=#{@results.total_allocated_memsize} " \
           "total_retained_memsize=#{@results.total_retained_memsize}"
+      )
+    end
+
+    def add_to_results
+      Carver.add_to_results(
+          entry_info[:name],
+          { total_allocated_memsize: @results.total_allocated_memsize, total_retained_memsize: @results.total_retained_memsize }.freeze
       )
     end
 
@@ -19,6 +26,10 @@ module Carver
 
     def is_controller?
       @parent.downcase.include?('controller')
+    end
+
+    def entry_info
+      @entry ||= entry
     end
 
     def entry

@@ -6,7 +6,11 @@ module Carver
         yield
       end
 
-      Presenter.new(report, path, action, parent).log if Carver.configuration.log_results
+      if Carver.configuration.enabled
+        presenter = Presenter.new(report, path, action, parent)
+        presenter.log if Carver.configuration.log_results
+        presenter.add_to_results
+      end
     end
   end
 end
