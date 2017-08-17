@@ -11,4 +11,14 @@ describe Carver::Configuration do
       expect(subject.instance_variable_get(:@enabled)).to be_truthy
     end
   end
+
+  describe '#targets' do
+    subject { described_class.new }
+
+    it 'returns targets or empty array' do
+      expect(subject.targets).to eq(%w(controllers jobs))
+      subject.targets = nil
+      expect(subject.targets).to eq(%w())
+    end
+  end
 end

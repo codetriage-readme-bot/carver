@@ -50,6 +50,41 @@ Carver.clear_results   # Re-initializes the current results to an empty hash.
                        # it is recommended to clear the results regularly
 ```
 
+If you wish to profile only specific controllers or specific jobs, first remove the entity from the "targets" configuration and then register the around filters yourself as below.
+```ruby
+# Carver configuration using no targets
+Carver.configure do |config|
+  config.targets = %w()
+end
+
+# Example controller with manual definition of the memory profiler filter
+class ExamplesController < ApplicationController
+  around_action :profile_controller_actions, only: %i(index) do
+    Carver::Profiler.profile_memory(controller_path, action_name, 'ApplicationController') do
+      yield
+    end
+  end
+  
+  def index
+  end
+  
+  def show
+  end
+end
+
+# Example job with manual definition of the memory profiler filter
+class ExampleJob < ApplicationJob
+  around_perform :profile_job_performs do |job|
+    Carver::Profiler.profile_memory(job.name, 'perform', 'ApplicationJob') do
+      yield
+    end
+  end
+  
+  def perform
+  end
+end
+```
+
 At the end of your test suite execution, given that carver is enabled, results will be written to profiling/results.json such as the example below.
 
 ```json

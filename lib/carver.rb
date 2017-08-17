@@ -76,7 +76,7 @@ module Carver
   end
 
   at_exit do
-    if configuration.output_file
+    if configuration.output_file && !current_results.empty?
       dir_struct = configuration.output_file.split('/')
       dir = dir_struct[0...dir_struct.size - 1].join('/')
       Dir.mkdir(dir) unless File.directory?(dir)
