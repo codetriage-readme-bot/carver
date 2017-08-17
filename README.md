@@ -99,4 +99,9 @@ At the end of your test suite execution, given that carver is enabled, results w
 }
 ```
 
+## Contributing
+
+Please refer to this simple [guideline].
+
 [memory_profiler]: https://github.com/SamSaffron/memory_profiler
+[guideline]: https://github.com/vinistock/carver/blob/master/CONTRIBUTING.md
