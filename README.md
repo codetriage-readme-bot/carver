@@ -99,12 +99,4 @@ At the end of your test suite execution, given that carver is enabled, results w
 }
 ```
 
-## Contributing
-
-1. Fork it ( https://github.com/vinistock/carver/fork )
-2. Create your feature branch (git checkout -b my-feature)
-3. Commit your changes (git commit -am 'Add my feature')
-4. Push to the branch (git push origin my-feature)
-5. Create a new Pull Request
-
 [memory_profiler]: https://github.com/SamSaffron/memory_profiler
