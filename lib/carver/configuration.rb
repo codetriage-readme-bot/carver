@@ -9,6 +9,7 @@ module Carver
       @log_results = false
       @output_file = './profiling/results.json'
       @enabled = Rails.env.test?
+      @generate_html = true
     end
 
     def targets

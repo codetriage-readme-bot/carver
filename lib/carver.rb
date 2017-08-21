@@ -4,6 +4,7 @@ require 'carver/version'
 require 'carver/profiler'
 require 'carver/configuration'
 require 'carver/presenter'
+require 'carver/generator'
 
 module Carver
   class << self
@@ -81,6 +82,7 @@ module Carver
       dir = dir_struct[0...dir_struct.size - 1].join('/')
       Dir.mkdir(dir) unless File.directory?(dir)
       File.open(configuration.output_file, 'w') { |f| f.write(current_results.to_json) }
+      Generator.new(current_results, "#{dir}/results.html") if configuration.generate_html
     end
   end
 end
