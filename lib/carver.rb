@@ -45,6 +45,7 @@ module Carver
 
   def self.define_around_action
     Rails.send(:load, "#{Rails.root}/app/controllers/application_controller.rb")
+    return if ApplicationController.instance_methods(false).include?(:profile_controller_actions)
 
     ApplicationController.class_eval do
       around_action :profile_controller_actions
@@ -73,7 +74,7 @@ module Carver
     raise 'ApplicationJob not defined'
   end
 
-  ActiveSupport.on_load(:application_controller, yield: true) do
+  ActiveSupport.on_load(:after_initialize, yield: true) do
     Carver.define_around_action if Carver.configuration.targets.include?('controllers')
     Carver.define_around_perform if Carver.configuration.targets.include?('jobs')
   end
