@@ -6,7 +6,9 @@
     section {padding-left: 150px;padding-right: 150px;margin-bottom: 100px;}
     .odd {background-color: lightgrey;}
     table {margin: 0 auto;}
-    .results-entry {margin-bottom: 40px;}
+    .results-entry {margin-bottom: 40px;float: left;width: 33%;}
+    .means td {border-bottom: 1px solid darkgray;font-weight: bold;}
+    .clearfix {clear: both;}
 </style>
 
 <h1>Carver memory profiling results</h1>
@@ -27,6 +29,11 @@
           </tr>
           </thead>
           <tbody>
+            <tr class="means">
+              <td>Mean</td>
+              <td><%= values.map { |v| v[:total_allocated_memsize] }.reduce(:+) / values.count %></td>
+              <td><%= values.map { |v| v[:total_retained_memsize] }.reduce(:+) / values.count %></td>
+            </tr>
           <% values.each_with_index do |value, index| %>
               <tr class="<%= index.even? ? 'even' : 'odd' %>">
                 <td><%= "##{index+1}" %></td>
@@ -39,6 +46,9 @@
       </div>
   <% end %>
 </section>
+
+<div class="clearfix"></div>
+<hr>
 
 <section>
   <h2>Jobs</h2>
@@ -56,6 +66,11 @@
           </tr>
           </thead>
           <tbody>
+          <tr class="means">
+            <td>Mean</td>
+            <td><%= values.map { |v| v[:total_allocated_memsize] }.reduce(:+) / values.count %></td>
+            <td><%= values.map { |v| v[:total_retained_memsize] }.reduce(:+) / values.count %></td>
+          </tr>
           <% values.each_with_index do |value, index| %>
               <tr class="<%= index.even? ? 'even' : 'odd' %>">
                 <td><%= "##{index+1}" %></td>
