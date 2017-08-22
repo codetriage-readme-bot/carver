@@ -36,6 +36,7 @@ Carver.configure do |config|
   config.log_results = false                      # Prints results to Rails.log
   config.enabled = Rails.env.test?                # Complete full profile for test environment
   config.output_file = './profiling/results.json' # JSON file path to write results to
+  config.generate_html = true			  # Generate HTML with profiling results at exit
 end
 ```
 
