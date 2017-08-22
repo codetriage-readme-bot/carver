@@ -22,7 +22,7 @@ describe Carver::Presenter do
 
     context 'when profiled entity is a controller' do
       it 'logs profiling results' do
-        expect(Rails.logger).to receive(:info).with('[Carver] source=Api::V1::ExamplesController#index type=controller total_allocated_memsize=21000 total_retained_memsize=1500')
+        expect(Rails.logger).to receive(:info).with('[Carver] source=Api::V1::ExamplesController#index type=controller total_allocated_memsize=0.02003 total_retained_memsize=0.00143')
         subject
       end
     end
@@ -33,7 +33,7 @@ describe Carver::Presenter do
       let(:parent) { 'ApplicationJob' }
 
       it 'logs profiling results' do
-        expect(Rails.logger).to receive(:info).with('[Carver] source=ExampleJob#perform type=job total_allocated_memsize=21000 total_retained_memsize=1500')
+        expect(Rails.logger).to receive(:info).with('[Carver] source=ExampleJob#perform type=job total_allocated_memsize=0.02003 total_retained_memsize=0.00143')
         subject
       end
     end
@@ -46,7 +46,7 @@ describe Carver::Presenter do
       Carver.clear_results
       expect(Carver.current_results).to eq({})
       subject
-      expect(Carver.current_results).to eq({ 'Api::V1::ExamplesController#index' => [{ total_allocated_memsize: 21000, total_retained_memsize: 1500 }] })
+      expect(Carver.current_results).to eq({ 'Api::V1::ExamplesController#index' => [{ total_allocated_memsize: 0.02003, total_retained_memsize: 0.00143 }] })
     end
   end
 end
