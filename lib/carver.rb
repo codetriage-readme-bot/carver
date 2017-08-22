@@ -73,7 +73,7 @@ module Carver
     raise 'ApplicationJob not defined'
   end
 
-  ActiveSupport.on_load(:after_initialize, yield: true) do
+  ActiveSupport.on_load(:application_controller, yield: true) do
     Carver.define_around_action if Carver.configuration.targets.include?('controllers')
     Carver.define_around_perform if Carver.configuration.targets.include?('jobs')
   end
