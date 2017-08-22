@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 describe Carver::Generator do
   describe '.create_html_from' do
-    subject { described_class.new(results, output_file).create_html_from }
+    subject { described_class.new(results, output_file).create_html }
     let(:output_file) { './profiling/results.html' }
     let(:results) { {
         'Api::V1::ExamplesController#index' => [

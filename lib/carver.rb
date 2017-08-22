@@ -47,7 +47,9 @@ module Carver
     Rails.send(:load, "#{Rails.root}/app/controllers/application_controller.rb")
 
     ApplicationController.class_eval do
-      around_action :profile_controller_actions do
+      around_action :profile_controller_actions
+
+      def profile_controller_actions
         Carver::Profiler.profile_memory(controller_path, action_name, 'ApplicationController') do
           yield
         end
@@ -61,7 +63,7 @@ module Carver
     Rails.send(:load, "#{Rails.root}/app/jobs/application_job.rb")
 
     ApplicationJob.class_eval do
-      around_perform :profile_job_performs do |job|
+      around_perform do |job|
         Carver::Profiler.profile_memory(job.name, 'perform', 'ApplicationJob') do
           yield
         end
@@ -82,7 +84,7 @@ module Carver
       dir = dir_struct[0...dir_struct.size - 1].join('/')
       Dir.mkdir(dir) unless File.directory?(dir)
       File.open(configuration.output_file, 'w') { |f| f.write(current_results.to_json) }
-      Generator.new(current_results, "#{dir}/results.html") if configuration.generate_html
+      Generator.new(current_results, "#{dir}/results.html").create_html if configuration.generate_html
     end
   end
 end

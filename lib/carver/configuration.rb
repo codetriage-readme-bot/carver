@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 module Carver
   class Configuration
-    attr_accessor :log_results, :output_file, :enabled
+    attr_accessor :log_results, :output_file, :enabled, :generate_html
     attr_writer :targets
 
     def initialize
