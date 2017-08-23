@@ -5,8 +5,11 @@ require 'carver/profiler'
 require 'carver/configuration'
 require 'carver/presenter'
 require 'carver/generator'
+require 'carver/hooks'
 
 module Carver
+  extend Hooks
+
   class << self
     attr_writer :configuration
   end
@@ -43,40 +46,13 @@ module Carver
     configuration.enabled = false
   end
 
-  def self.define_around_action
-    Rails.send(:load, "#{Rails.root}/app/controllers/application_controller.rb")
-    return if ApplicationController.instance_methods(false).include?(:profile_controller_actions)
-
-    ApplicationController.class_eval do
-      around_action :profile_controller_actions
-
-      def profile_controller_actions
-        Carver::Profiler.profile_memory(controller_path, action_name, 'ApplicationController') do
-          yield
-        end
-      end
-    end
-  rescue LoadError, NameError
-    raise 'ApplicationController not defined'
-  end
-
-  def self.define_around_perform
-    Rails.send(:load, "#{Rails.root}/app/jobs/application_job.rb")
-
-    ApplicationJob.class_eval do
-      around_perform do |job|
-        Carver::Profiler.profile_memory(job.name, 'perform', 'ApplicationJob') do
-          yield
-        end
-      end
-    end
-  rescue LoadError, NameError
-    raise 'ApplicationJob not defined'
-  end
-
   ActiveSupport.on_load(:after_initialize, yield: true) do
-    Carver.define_around_action if Carver.configuration.targets.include?('controllers')
-    Carver.define_around_perform if Carver.configuration.targets.include?('jobs')
+    if configuration.specific_targets.nil?
+      Carver.define_around_action if Carver.configuration.targets.include?('controllers')
+      Carver.define_around_perform if Carver.configuration.targets.include?('jobs')
+    else
+      Carver.define_specific_profilers
+    end
   end
 
   at_exit do

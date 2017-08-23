@@ -37,6 +37,7 @@ Carver.configure do |config|
   config.enabled = Rails.env.test?                # Complete full profile for test environment
   config.output_file = './profiling/results.json' # JSON file path to write results to
   config.generate_html = true			  # Generate HTML with profiling results at exit
+  config.specific_targets = nil                   # Specific targets to profile
 end
 ```
 
@@ -51,7 +52,15 @@ Carver.clear_results   # Re-initializes the current results to an empty hash.
                        # it is recommended to clear the results regularly
 ```
 
-If you wish to profile only specific controllers or specific jobs, first remove the entity from the "targets" configuration and then register the around filters yourself as below.
+If you wish to profile only specific controllers or specific jobs, you have two options:
+
+* Add specific targets in the configurations (has priority over targets). Format: ControllerName#action
+```ruby
+Carver.configure do |config|
+  config.specific_targets = %w(Api::V1::ExamplesController#index ExampleJob PagesController#show)
+end
+```
+* You can also remove the entities from the "targets" configuration and then register the around filters yourself as below.
 ```ruby
 # Carver configuration using no targets
 Carver.configure do |config|
