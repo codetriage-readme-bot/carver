@@ -54,10 +54,10 @@ Carver.clear_results   # Re-initializes the current results to an empty hash.
 
 If you wish to profile only specific controllers or specific jobs, you have two options:
 
-* Add specific targets in the configurations (has priority over targets). Format: ControllerName#action
+* Add specific targets in the configurations (has priority over targets). Format: ControllerName#action1,action2
 ```ruby
 Carver.configure do |config|
-  config.specific_targets = %w(Api::V1::ExamplesController#index ExampleJob PagesController#show)
+  config.specific_targets = %w(Api::V1::ExamplesController#index,show ExampleJob PagesController#show)
 end
 ```
 * You can also remove the entities from the "targets" configuration and then register the around filters yourself as below.
@@ -69,7 +69,7 @@ end
 
 # Example controller with manual definition of the memory profiler filter
 class ExamplesController < ApplicationController
-  around_action :profile_controller_actions, only: %i(index) do
+  around_action only: %i(index) do
     Carver::Profiler.profile_memory(controller_path, action_name, 'ApplicationController') do
       yield
     end
@@ -84,7 +84,7 @@ end
 
 # Example job with manual definition of the memory profiler filter
 class ExampleJob < ApplicationJob
-  around_perform :profile_job_performs do |job|
+  around_perform do |job|
     Carver::Profiler.profile_memory(job.name, 'perform', 'ApplicationJob') do
       yield
     end

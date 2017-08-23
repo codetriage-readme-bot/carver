@@ -5,12 +5,10 @@ module Carver
       report = MemoryProfiler.report do
         yield
       end
-
-      if Carver.configuration.enabled
-        presenter = Presenter.new(report, path, action, parent)
-        presenter.log if Carver.configuration.log_results
-        presenter.add_to_results
-      end
+      
+      presenter = Presenter.new(report, path, action, parent)
+      presenter.log if Carver.configuration.log_results
+      presenter.add_to_results if Carver.configuration.enabled
     end
   end
 end

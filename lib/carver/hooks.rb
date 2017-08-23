@@ -8,7 +8,7 @@ module Carver
         if klass.downcase.include?('controller')
           controller_path = klass.downcase.split('::').join('/')
           Rails.send(:load, "#{Rails.root}/app/controllers/#{controller_path}.rb")
-          define_around_action_for(klass, action)
+          define_around_action_for(klass, action.split(','))
         else
           Rails.send(:load, "#{Rails.root}/app/jobs/#{klass}.rb")
           define_around_perform_for(klass)
