@@ -100,6 +100,10 @@ At the end of your test suite execution, given that carver is enabled, results w
 }
 ```
 
+If the option to generate HTML is enabled, then a page similar to this one will be written to profiling/results.html.
+
+![carver results](https://user-images.githubusercontent.com/18742907/29593071-846c859a-877e-11e7-8be8-4a829a5d1f75.png)
+
 ## Contributing
 
 Please refer to this simple [guideline].
