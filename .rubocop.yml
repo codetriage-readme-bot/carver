@@ -1,0 +1,17 @@
+AllCops:
+  Exclude:
+    - 'spec/**/*'
+Metrics/LineLength:
+  Max: 160
+Bundler/OrderedGems:
+  Enabled: false
+Gemspec/OrderedDependencies:
+  Enabled: false
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+Documentation:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/Lambda:
+  Enabled: false

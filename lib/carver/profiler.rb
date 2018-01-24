@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Carver
   class Profiler
     def self.profile_memory(path, action, parent)

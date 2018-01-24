@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Carver
   class Presenter
     BYTES_TO_MB_CONSTANT = 1024**2
@@ -34,7 +35,7 @@ module Carver
       (@results.total_retained_memsize.to_f / BYTES_TO_MB_CONSTANT).round(5)
     end
 
-    def is_controller?
+    def controller?
       @parent.downcase.include?('controller')
     end
 
@@ -43,7 +44,7 @@ module Carver
     end
 
     def entry
-      if is_controller?
+      if controller?
         { name: "#{@path.split('/').map(&:titleize).join('::').delete(' ')}Controller##{@action}", type: 'controller' }.freeze
       else
         { name: "#{@path}##{@action}", type: 'job' }.freeze

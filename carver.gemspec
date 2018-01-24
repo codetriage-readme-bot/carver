@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 # coding: utf-8
+
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'carver/version'
@@ -10,8 +11,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Vinicius Stock']
   spec.email         = ['vinicius.stock@outlook.com']
 
-  spec.summary       = %q{A memory profiler for Rails controllers and jobs}
-  spec.description   = %q{This gem profiles memory consumption in controllers and jobs and allows logging this reports for further insights}
+  spec.summary       = %q(A memory profiler for Rails controllers and jobs)
+  spec.description   = %q(This gem profiles memory consumption in controllers and jobs and allows logging this reports for further insights)
   spec.homepage      = 'https://github.com/vinistock/carver'
   spec.license       = 'MIT'
 
@@ -30,4 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'codeclimate-test-reporter', '~> 1.0'
   spec.add_development_dependency 'byebug', '~> 9.0'
   spec.add_development_dependency 'rails', '>= 4.0'
+  spec.add_development_dependency 'rubocop', '~> 0.52.1'
 end

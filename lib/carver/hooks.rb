@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Carver
   module Hooks
     def define_specific_profilers

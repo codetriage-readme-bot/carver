@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'memory_profiler'
 require 'carver/version'
 require 'carver/profiler'
