@@ -17,7 +17,7 @@ describe Carver::Profiler do
 
     it 'profiles method and logs results' do
       Carver.configuration.log_results = true
-      expect(Rails.logger).to receive(:info).with('[Carver] source=Api::V1::ExamplesController#index type=controller total_allocated_memsize=0.00034 total_retained_memsize=0.00015')
+      expect(Rails.logger).to receive(:info).with(/\[Carver\] source=Api::V1::ExamplesController#index type=controller total_allocated_memsize=.* total_retained_memsize=.*/)
       subject
     end
 
@@ -25,7 +25,8 @@ describe Carver::Profiler do
       Carver.configuration.log_results = false
       Carver.clear_results
       subject
-      expect(Carver.current_results).to eq({ 'Api::V1::ExamplesController#index' => [{ total_allocated_memsize: 0.00034, total_retained_memsize: 0.00015 }] })
+      expect(Carver.current_results['Api::V1::ExamplesController#index'].first).to have_key(:total_allocated_memsize)
+      expect(Carver.current_results['Api::V1::ExamplesController#index'].first).to have_key(:total_retained_memsize)
     end
   end
 end
